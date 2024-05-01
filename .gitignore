@@ -1,0 +1,6 @@
+*.log
+*.json
+*.db
+*.vscode
+*.pyc
+*.xlsx
