@@ -7,3 +7,5 @@ class execGetValues:
         self.values = getData()
 
         self.valueFinal = self.values.value
+
+        self.emails = self.values.get_email(self.valueFinal)

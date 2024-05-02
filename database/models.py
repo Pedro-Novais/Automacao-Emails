@@ -26,17 +26,25 @@ class CreateTable:
                             valueB TEXT NOT NULL,
                             valueL TEXT NOT NULL,
                             dateVenc TEXT NOT NULL,
-                            email TEXT NOT NULL,
-                            sended TEXT NOT NULL
+                            email TEXT NOT NULL
                         )''')
             
+            cursor.execute('''CREATE TABLE IF NOT EXISTS Status (
+                            id INTEGER PRIMARY KEY,
+                            email TEXT NOT NULL UNIQUE,
+                            statusNote TEXT NOT NULL,
+                            statusBoleto TEXT NOT NULL,
+                            sended TEXT NOT NULL    
+                        ) ''')
+            
             self.logger.info('Banco de dados e tabelas criadas com sucesso')
+
+            cursor.close()
             return True
             
         except Exception as error:
 
             self.logger.error('Erro ao criar banco de dados / tabelas: {}'.format(error))
-            print(error)
 
     def logs(self):
 

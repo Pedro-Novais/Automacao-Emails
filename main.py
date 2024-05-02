@@ -1,6 +1,7 @@
 from database.__init__ import execDatabase
 from src.excel.__init__ import execGetValues
 from src.insert.__init__ import execInsertData
+from src.verifyPdf.__init__ import execNotes
 from database.conn import Conect
 
 class execMain:
@@ -11,12 +12,19 @@ class execMain:
 
         value = execGetValues()
 
-        self.insertingValues(value.valueFinal)
+        self.insertingValues(value.valueFinal, value.emails)
 
-    def insertingValues(self, values):
+        self.verifyPdfs(emails=value.emails)
+
+
+    def insertingValues(self, values, emails):
         
         cursor = Conect()
-        print(cursor.conn.cursor)
-        execInsertData(values, cursor.conn)
+        execInsertData(values, cursor.conn, emails)
+
+    def verifyPdfs(self, emails):
+
+        cursor = Conect()
+        execNotes(emails=emails, cursor=cursor.conn)
 
 execMain()

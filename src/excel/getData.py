@@ -36,10 +36,34 @@ class getData:
     
     def get_email(self, values):
 
-        self = []
+        try:
+            self = []
+            index_duplicated = []
 
-        for i in range(len(values)):
+            for i in range(len(values)):
 
-            self.append(values[i][10])
+                self.append(values[i][10])
+            
+            for i in range(len(self)):
+
+                after = i + 1 
+
+                if after >= len(self):
+
+                    break
+
+                if self[i] == self[after]:
+
+                    index_duplicated.append(i)
+            
+            index_duplicated.reverse()
+
+            for i in range(len(index_duplicated)):
+
+                del self[index_duplicated[i]]
+
+            return self
         
-        return self
+        except Exception as error:
+
+            print('Erro na manipulação do email, {}'.format(error))
