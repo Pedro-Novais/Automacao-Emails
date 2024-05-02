@@ -1,9 +1,12 @@
+import logging
 import sqlite3
 import os
 
 class Conect:
 
     def __init__(self):
+
+        self.logs()
 
         self.conn = self.connection()
 
@@ -17,11 +20,26 @@ class Conect:
 
             conect = sqlite3.connect(dir_database)
 
-            print('conexão realizada com sucesso')
-
+            self.logger.info('Conexao com banco de dados realizada com sucesso')
+            
             return conect
 
         except Exception as error:
 
-            print('Erro ao conectar com o banco de dados')
-            print(error)
+            self.logger.error('Erro ao conectar com o banco de dados, erro: {}'.format(error))
+
+            return False
+        
+    def logs(self):
+
+        self.dir_script = os.path.dirname(os.path.abspath(__file__))
+
+        self.logger = logging.getLogger('table')
+        self.logger.setLevel(logging.INFO)
+
+        self.handler = logging.FileHandler('{}/table.log'.format(self.dir_script))
+
+        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        self.handler.setFormatter(self.formatter)
+
+        self.logger.addHandler(self.handler)
