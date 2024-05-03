@@ -21,77 +21,73 @@ class verifyNotes:
 
         for i in range(len(emails)):
             
-            self.getNote(emails[i])
-
-            if len(self.notes) == 1:
+            self.getNoteSave(emails[i])
                 
-                self.verifyOneNote(emails[i])
-            
-            elif len(self.notes) > 1:
-                print('legal')
+            self.verifyNotes(emails[i])
 
-    def getNote(self, email):
+    def getNoteSave(self, email):
 
         try:
             
             self.cursor.execute(''' SELECT notes FROM Emails WHERE email = ?''', (email,))
 
             self.notes = self.cursor.fetchall()
-
-            print(self.notes)
         
         except Exception as error:
 
             print(error)
-    
-    def verifyOneNote(self, email):
 
-        try:
-            note = self.notes[0][0]
+    def verifyNotes(self, email):
 
-            index_from_note = self.notes_file.index('{}.pdf'.format(note))
+        infos_note = []
+        self.verifyStatus = "True"
 
-            infos_note = {
+        for i in range(len(self.notes)):
+
+            try:
+
+                note = self.notes[i][0]
+                index_from_note = self.notes_file.index('{}.pdf'.format(note))
+                
+                data_info_notes = {
                             "nameNote": self.notes_file[index_from_note],
                             "exist": "True"
-                          }
-            
-            dataNote = [infos_note]
+                            }
+                
+                infos_note.append(data_info_notes)
 
-            dataStr = json.dumps(dataNote)
+                self.logger.info('Nota: {}.pdf do email: {} existe!'.format(note, email))
 
-            self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', ("True", email))
+            except ValueError:
+                
+                self.verifyStatus = "False"
+
+                data_info_notes = {
+                                "nameNote": '{}.pdf'.format(note),
+                                "exist": "False"
+                            }
+                
+                infos_note.append(data_info_notes)
+
+                print("Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
+                self.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
+
+            except Exception as error:
+
+                self.verifyStatus = "False"
+                print(error)
+                self.logger.error('Algum erro desconhecido ocorreu: {}'.format(error))
+
+                break
+
+        if len(infos_note) > 0:
+
+            dataStr = json.dumps(infos_note)
+
             self.cursor.execute(''' UPDATE Status SET nameNote = ? WHERE email = ?''', (dataStr, email))
+            self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', (self.verifyStatus, email))
 
             self.conn.commit()
-
-            self.logger.info('Nota: {}.pdf do email: {} existe!'.format(note, email))
-        
-        except ValueError:
-            
-            infos_note = {
-                            "nameNote": '{}.pdf'.format(note),
-                            "exist": "False"
-                          }
-            
-            dataNote = [infos_note]
-
-            dataStr = json.dumps(dataNote)
-
-            self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', ("False", email))
-            self.cursor.execute(''' UPDATE Status SET nameNote = ? WHERE email = ?''', (dataStr, email))
-
-            self.conn.commit()
-
-            print("Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
-            self.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
-
-        except Exception as error:
-
-            print(error)
-            self.logger.error('Algum erro inesperado ocorreu - {}'.format(error))
-
-            return False
 
     def logs(self):
 
