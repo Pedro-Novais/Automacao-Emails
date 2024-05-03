@@ -1,13 +1,19 @@
 import os
 import json
+import logging
+from ..utils.getFiles import getFiles
 
 class verifyNotes:
 
     def __init__(self, emails, cursor):
 
+        self.logs()
+
         self.conn = cursor
 
         self.cursor = cursor.cursor()
+
+        self.notes_file = getFiles('Notas')
 
         self.verifyNotes(emails)
 
@@ -40,24 +46,63 @@ class verifyNotes:
     
     def verifyOneNote(self, email):
 
-        note = self.notes[0][0]
+        try:
+            note = self.notes[0][0]
 
-        dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+            index_from_note = self.notes_file.index('{}.pdf'.format(note))
 
-        dir_pdf_note = os.path.join(dir_relative, 'pdf', 'Notas', '{}.pdf'.format(note))
-
-        if os.path.exists(dir_pdf_note):
-
-            dataNote = {note: True}
+            infos_note = {
+                            "nameNote": self.notes_file[index_from_note],
+                            "exist": "True"
+                          }
+            
+            dataNote = [infos_note]
 
             dataStr = json.dumps(dataNote)
 
-            self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', (dataStr, email))
+            self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', ("True", email))
+            self.cursor.execute(''' UPDATE Status SET nameNote = ? WHERE email = ?''', (dataStr, email))
 
             self.conn.commit()
 
-            print('Nota {} existe'.format(note))
+            self.logger.info('Nota: {}.pdf do email: {} existe!'.format(note, email))
         
-        else:
+        except ValueError:
+            
+            infos_note = {
+                            "nameNote": '{}.pdf'.format(note),
+                            "exist": "False"
+                          }
+            
+            dataNote = [infos_note]
 
-            print('Nota {} nao existe'.format(note))
+            dataStr = json.dumps(dataNote)
+
+            self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', ("False", email))
+            self.cursor.execute(''' UPDATE Status SET nameNote = ? WHERE email = ?''', (dataStr, email))
+
+            self.conn.commit()
+
+            print("Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
+            self.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
+
+        except Exception as error:
+
+            print(error)
+            self.logger.error('Algum erro inesperado ocorreu - {}'.format(error))
+
+            return False
+
+    def logs(self):
+
+        self.dir_script = os.path.dirname(os.path.abspath(__file__))
+
+        self.logger = logging.getLogger('notes')
+        self.logger.setLevel(logging.INFO)
+
+        self.handler = logging.FileHandler('{}/note.log'.format(self.dir_script))
+
+        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        self.handler.setFormatter(self.formatter)
+
+        self.logger.addHandler(self.handler)

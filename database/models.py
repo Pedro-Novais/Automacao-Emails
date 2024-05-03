@@ -33,7 +33,9 @@ class CreateTable:
                             id INTEGER PRIMARY KEY,
                             email TEXT NOT NULL UNIQUE,
                             statusNote TEXT NOT NULL,
+                            nameNote TEXT,
                             statusBoleto TEXT NOT NULL,
+                            nameBlt TEXT,
                             sended TEXT NOT NULL    
                         ) ''')
             
