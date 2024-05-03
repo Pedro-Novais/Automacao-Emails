@@ -8,20 +8,20 @@ class Conect:
 
         self.logs()
 
-        self.conn = self.connection()
+        self.conn = self.make_connection()
 
-    def connection(self):
+    def make_connection(self):
 
         try:  
 
             dir_script = os.path.dirname(os.path.abspath(__file__))
 
-            dir_database = os.path.join(dir_script, 'data.db')
+            dir_database = os.path.join(dir_script, '..', '..', 'database', 'data.db')
 
             conect = sqlite3.connect(dir_database)
 
             self.logger.info('Conexao com banco de dados realizada com sucesso')
-            
+
             return conect
 
         except Exception as error:
@@ -32,12 +32,13 @@ class Conect:
         
     def logs(self):
 
-        self.dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_log = os.path.abspath(os.path.join(dir_script, '..', '..', 'logs'))
 
-        self.logger = logging.getLogger('table')
+        self.logger = logging.getLogger('conection')
         self.logger.setLevel(logging.INFO)
 
-        self.handler = logging.FileHandler('{}/table.log'.format(self.dir_script))
+        self.handler = logging.FileHandler('{}/conection.log'.format(dir_log))
 
         self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         self.handler.setFormatter(self.formatter)

@@ -2,6 +2,6 @@ from .insertValues import Insert
 
 class execInsertData:
 
-    def __init__(self, value, conn, emails):
+    def __init__(self, value, emails):
 
-        Insert(values=value, cursor=conn, emails=emails)
+        Insert(values=value, emails=emails)

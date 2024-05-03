@@ -1,8 +1,7 @@
-from database.__init__ import execDatabase
+from src.scriptDb.__init__ import execDatabase
 from src.excel.__init__ import execGetValues
 from src.insert.__init__ import execInsertData
 from src.verifyPdf.__init__ import execNotes
-from database.conn import Conect
 
 class execMain:
 
@@ -19,12 +18,10 @@ class execMain:
 
     def insertingValues(self, values, emails):
         
-        cursor = Conect()
-        execInsertData(values, cursor.conn, emails)
+        execInsertData(values, emails)
 
     def verifyPdfs(self, emails):
 
-        cursor = Conect()
-        execNotes(emails=emails, cursor=cursor.conn)
+        execNotes(emails=emails)
 
 execMain()

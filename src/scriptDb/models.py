@@ -7,13 +7,14 @@ class CreateTable:
     def __init__(self):
         
         self.logs()
+        self.createTable()
     
     def createTable(self):
 
         try:
             db = Conect()
 
-            cursor = db.connection()
+            cursor = db.conn
 
             cursor.execute('''CREATE TABLE IF NOT EXISTS Emails (
                             idRow TEXT NOT NULL PRIMARY KEY,
@@ -36,9 +37,11 @@ class CreateTable:
                             nameNote TEXT,
                             statusBoleto TEXT NOT NULL,
                             nameBlt TEXT,
+                            statusSend INTEGER NOT NULL,
                             sended TEXT NOT NULL    
                         ) ''')
             
+            print('Banco de dados criados com sucesso')
             self.logger.info('Banco de dados e tabelas criadas com sucesso')
 
             cursor.close()
@@ -46,16 +49,18 @@ class CreateTable:
             
         except Exception as error:
 
+            print('Erro ao criar banco de dados / tabelas: {}'.format(error))
             self.logger.error('Erro ao criar banco de dados / tabelas: {}'.format(error))
 
     def logs(self):
 
-        self.dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_log = os.path.abspath(os.path.join(dir_script, '..', '..', 'logs'))
 
-        self.logger = logging.getLogger('table')
+        self.logger = logging.getLogger('database')
         self.logger.setLevel(logging.INFO)
 
-        self.handler = logging.FileHandler('{}/table.log'.format(self.dir_script))
+        self.handler = logging.FileHandler('{}/database.log'.format(dir_log))
 
         self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         self.handler.setFormatter(self.formatter)

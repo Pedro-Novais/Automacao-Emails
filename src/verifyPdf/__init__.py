@@ -1,7 +1,14 @@
 from .notes import verifyNotes
+from .blt import verifyBlt
 
 class execNotes:
 
-    def __init__(self, emails, cursor):
+    def __init__(self, emails):
 
-        verifyNotes(emails=emails, cursor = cursor)
+        verifyNotes(
+            emails=emails
+            )
+        
+        verifyBlt(
+            emails=emails
+            )

@@ -1,17 +1,23 @@
 import logging
 import os
 import sqlite3
+from ..scriptDb.conn import Conect
 
 class Insert:
 
-    def __init__(self, values, cursor, emails):
+    def __init__(self, values, emails):
+
+        conection = Conect()
+
+        self.conn = conection.conn
+        self.cursor = self.conn.cursor()
 
         self.logs()
 
         self.emails = emails
 
-        self.conn = cursor
-        self.cursor = cursor.cursor()
+        # self.conn = cursor
+        # self.cursor = cursor.cursor()
         self.insert = self.inserting(values)
 
     def inserting(self, values):
@@ -59,9 +65,9 @@ class Insert:
         try:
             
             self.cursor.execute(''' INSERT INTO Status
-                                (email, statusNote, statusBoleto, sended) 
-                                VALUES (?, ?, ?, ?) ''', 
-                                (email, "False", "False", "False"))
+                                (email, statusNote, statusBoleto, statusSend, sended) 
+                                VALUES (?, ?, ?, ?, ?) ''', 
+                                (email, "False", "False", 0, "False"))
             
             self.conn.commit()
 
@@ -78,12 +84,13 @@ class Insert:
     
     def logs(self):
 
-        self.dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_log = os.path.abspath(os.path.join(dir_script, '..', '..', 'logs'))
 
-        self.logger = logging.getLogger('values')
+        self.logger = logging.getLogger('insertValue')
         self.logger.setLevel(logging.INFO)
 
-        self.handler = logging.FileHandler('{}/values.log'.format(self.dir_script))
+        self.handler = logging.FileHandler('{}/insertValue.log'.format(dir_log))
 
         self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         self.handler.setFormatter(self.formatter)

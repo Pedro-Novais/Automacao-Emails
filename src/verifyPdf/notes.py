@@ -2,28 +2,34 @@ import os
 import json
 import logging
 from ..utils.getFiles import getFiles
+from ..scriptDb.conn import Conect
 
 class verifyNotes:
 
-    def __init__(self, emails, cursor):
+    def __init__(self, emails):
 
         self.logs()
 
-        self.conn = cursor
+        conection = Conect()
 
-        self.cursor = cursor.cursor()
+        self.conn = conection.conn
+        self.cursor = self.conn.cursor()
+
+        #self.conn = cursor
+
+        #self.cursor = cursor.cursor()
 
         self.notes_file = getFiles('Notas')
 
-        self.verifyNotes(emails)
+        self.verify(emails)
 
-    def verifyNotes(self, emails):
+    def verify(self, emails):
 
         for i in range(len(emails)):
             
             self.getNoteSave(emails[i])
                 
-            self.verifyNotes(emails[i])
+            self.verifyNotesFiles(emails[i])
 
     def getNoteSave(self, email):
 
@@ -37,7 +43,7 @@ class verifyNotes:
 
             print(error)
 
-    def verifyNotes(self, email):
+    def verifyNotesFiles(self, email):
 
         infos_note = []
         self.verifyStatus = "True"
@@ -91,12 +97,13 @@ class verifyNotes:
 
     def logs(self):
 
-        self.dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_script = os.path.dirname(os.path.abspath(__file__))
+        dir_log = os.path.abspath(os.path.join(dir_script, '..', '..', 'logs'))
 
         self.logger = logging.getLogger('notes')
         self.logger.setLevel(logging.INFO)
 
-        self.handler = logging.FileHandler('{}/note.log'.format(self.dir_script))
+        self.handler = logging.FileHandler('{}/note.log'.format(dir_log))
 
         self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         self.handler.setFormatter(self.formatter)
