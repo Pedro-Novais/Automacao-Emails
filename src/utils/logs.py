@@ -11,9 +11,9 @@ class Logs:
         self.logger = logging.getLogger(nameLog)
         self.logger.setLevel(logging.INFO)
 
-        self.handler = logging.FileHandler('{}/{}.log'.format(dir_log, nameLog))
+        handler = logging.FileHandler('{}/{}.log'.format(dir_log, nameLog))
 
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
 
-        self.logger.addHandler(self.handler)
+        self.logger.addHandler(handler)

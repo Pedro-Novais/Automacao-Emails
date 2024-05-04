@@ -73,7 +73,7 @@ class verifyNotes:
                 
                 infos_note.append(data_info_notes)
 
-                print("Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
+                print("ERRO - Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
                 log.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
 
             except Exception as error:

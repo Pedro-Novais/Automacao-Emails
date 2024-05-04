@@ -37,7 +37,7 @@ class CreateTable:
                             statusNote TEXT NOT NULL,
                             nameNote TEXT,
                             statusBoleto TEXT NOT NULL,
-                            nameBlt TEXT,
+                            nameBoleto TEXT,
                             statusSend INTEGER NOT NULL,
                             sended TEXT NOT NULL    
                         ) ''')
