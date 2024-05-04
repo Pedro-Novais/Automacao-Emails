@@ -3,3 +3,5 @@
 *.pyc
 *.xlsx
 *.pdf
+*.log
+*.db
