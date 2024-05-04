@@ -3,6 +3,7 @@ import sys
 from ..utils.getFiles import getFiles
 from ..scriptDb.conn import Conect
 from ..utils.logs import Logs
+from ..utils.spaceLine import space_line
 
 class VerifyNotes:
 
@@ -73,7 +74,8 @@ class VerifyNotes:
                 
                 infos_note.append(data_info_notes)
 
-                print("ERRO - Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
+                space_line(100)
+                print("ERRO - Nota {}.pdf do email: {}, nao existe!".format(note, email))
                 log.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
 
             except Exception as error:

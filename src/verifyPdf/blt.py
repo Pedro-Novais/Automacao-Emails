@@ -3,6 +3,7 @@ import sys
 from ..utils.getFiles import getFiles
 from ..scriptDb.conn import Conect
 from ..utils.logs import Logs
+from ..utils.spaceLine import space_line
 
 class VerifyBlt:
 
@@ -67,7 +68,8 @@ class VerifyBlt:
 
                 else: 
                     
-                    print('ERRO - Boleto: {}.pdf do email: {} não existe!'.format(blt_in_files[0], email))
+                    space_line(100)
+                    print('ERRO - Boleto: {}.pdf do email: {} nao existe!'.format(blt_in_files[0], email))
                     log.logger.error('Boleto: {}.pdf do email: {} nao existe!'.format(blt_in_files[0], email))
 
             except Exception as error:
