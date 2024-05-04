@@ -1,7 +1,6 @@
-import logging
-import os
 import sqlite3
 from ..scriptDb.conn import Conect
+from ..utils.logs import Logs
 
 class Insert:
 
@@ -12,31 +11,30 @@ class Insert:
         self.conn = conection.conn
         self.cursor = self.conn.cursor()
 
-        self.logs()
-
         self.emails = emails
 
-        # self.conn = cursor
-        # self.cursor = cursor.cursor()
         self.insert = self.inserting(values)
 
     def inserting(self, values):
 
         if len(values) > 0:
+            logEmail = Logs('Inserting_table_Emails')
 
             for i in range(len(values)):
 
-                self.insertingRow(value=values[i])
+                self.insertingRow(value=values[i], log=logEmail)
             
+            logStatus = Logs('Inserting_table_status')
+
             for i in range(len(self.emails)):
 
-                self.insertingRowStatus(self.emails[i])
+                self.insertingRowStatus(email=self.emails[i], log=logStatus)
 
 
         self.cursor.close()
         self.conn.close()
     
-    def insertingRow(self, value):
+    def insertingRow(self, value, log):
 
         try:
 
@@ -48,20 +46,19 @@ class Insert:
             
             self.conn.commit()
 
-            self.logger.info('Insercao de valores realizadas com sucesso, Id interno: {} e email: {}'. format(value[0], value[10]))
-
-            #self.cursor
+            log.logger.info('Insercao de valores realizadas com sucesso na tabela Email, Id interno: {} e email: {}'. format(value[0], value[10]))
         
         except Exception as error:
             
             if isinstance(error, sqlite3.IntegrityError) and "UNIQUE constraint failed" in str(error):
 
-                self.logger.warning('Valores ja existem na tabela, id Interno: {} e email: {}'.format(value[0], value[10]))
+                log.logger.warning('Valores ja existem na tabela Email, id Interno: {} e email: {}'.format(value[0], value[10]))
 
             else:
-                self.logger.error('Erro ao inserir valores de Id interno: {} e email: {}, erro: {}'. format(value[0], value[10], error))
+                log.logger.error('Erro ao inserir valores na tabela Email, Id interno: {}, email: {}, erro: {}'. format(value[0], value[10], error))
 
-    def insertingRowStatus(self, email):
+    def insertingRowStatus(self, email, log):
+
         try:
             
             self.cursor.execute(''' INSERT INTO Status
@@ -71,28 +68,14 @@ class Insert:
             
             self.conn.commit()
 
-            self.logger.info('Insercao de valores realizadas com sucesso na tabela Status, email: {}'.format(email))
+            log.logger.info('Insercao de valores realizadas com sucesso na tabela Status, email: {}'.format(email))
             
         except Exception as error:
 
             if isinstance(error, sqlite3.IntegrityError) and "UNIQUE constraint failed" in str(error):
 
-                self.logger.warning('Valores ja existem na tabela Status, email: {}'.format(email))
+                log.logger.warning('Valores ja existem na tabela Status, email: {}'.format(email))
 
             else:
-                self.logger.error('Erro ao inserir dados na tabela Status, email: {}, erro: {}'.format(email, error))
-    
-    def logs(self):
 
-        dir_script = os.path.dirname(os.path.abspath(__file__))
-        dir_log = os.path.abspath(os.path.join(dir_script, '..', '..', 'logs'))
-
-        self.logger = logging.getLogger('insertValue')
-        self.logger.setLevel(logging.INFO)
-
-        self.handler = logging.FileHandler('{}/insertValue.log'.format(dir_log))
-
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
-
-        self.logger.addHandler(self.handler)
+                log.logger.error('Erro ao inserir dados na tabela Status, email: {}, erro: {}'.format(email, error))

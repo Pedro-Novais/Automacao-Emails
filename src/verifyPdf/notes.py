@@ -1,23 +1,17 @@
-import os
 import json
-import logging
+import sys
 from ..utils.getFiles import getFiles
 from ..scriptDb.conn import Conect
+from ..utils.logs import Logs
 
 class verifyNotes:
 
     def __init__(self, emails):
 
-        self.logs()
-
         conection = Conect()
 
         self.conn = conection.conn
         self.cursor = self.conn.cursor()
-
-        #self.conn = cursor
-
-        #self.cursor = cursor.cursor()
 
         self.notes_file = getFiles('Notas')
 
@@ -25,13 +19,15 @@ class verifyNotes:
 
     def verify(self, emails):
 
+        log = Logs('Verify_notes')
+
         for i in range(len(emails)):
             
-            self.getNoteSave(emails[i])
+            self.getNoteSave(emails[i], log)
                 
-            self.verifyNotesFiles(emails[i])
+            self.verifyNotesFiles(emails[i], log)
 
-    def getNoteSave(self, email):
+    def getNoteSave(self, email, log):
 
         try:
             
@@ -41,9 +37,11 @@ class verifyNotes:
         
         except Exception as error:
 
-            print(error)
+            print('Algum erro inesperado ocorreu ao selecionar as notas salvas na tabela Email, erro: {}'.format(error))
+            log.logger.error('Algum erro inesperado ocorreu ao selecionar as notas salvas na tabela Email, erro: {}'.format(error))
+            sys.exit()
 
-    def verifyNotesFiles(self, email):
+    def verifyNotesFiles(self, email, log):
 
         infos_note = []
         self.verifyStatus = "True"
@@ -62,7 +60,7 @@ class verifyNotes:
                 
                 infos_note.append(data_info_notes)
 
-                self.logger.info('Nota: {}.pdf do email: {} existe!'.format(note, email))
+                log.logger.info('Nota: {}.pdf do email: {} existe!'.format(note, email))
 
             except ValueError:
                 
@@ -76,15 +74,15 @@ class verifyNotes:
                 infos_note.append(data_info_notes)
 
                 print("Nota {}.pdf do email: {}, não encontrada no diretório de arquivos PDF".format(note, email))
-                self.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
+                log.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
 
             except Exception as error:
 
                 self.verifyStatus = "False"
-                print(error)
-                self.logger.error('Algum erro desconhecido ocorreu: {}'.format(error))
+                print('Algum erro desconhecido ocorreu: {}'.format(error))
+                log.logger.error('Algum erro desconhecido ocorreu: {}'.format(error))
 
-                break
+                sys.exit()
 
         if len(infos_note) > 0:
 
@@ -94,18 +92,3 @@ class verifyNotes:
             self.cursor.execute(''' UPDATE Status SET statusNote = ? WHERE email = ?''', (self.verifyStatus, email))
 
             self.conn.commit()
-
-    def logs(self):
-
-        dir_script = os.path.dirname(os.path.abspath(__file__))
-        dir_log = os.path.abspath(os.path.join(dir_script, '..', '..', 'logs'))
-
-        self.logger = logging.getLogger('notes')
-        self.logger.setLevel(logging.INFO)
-
-        self.handler = logging.FileHandler('{}/note.log'.format(dir_log))
-
-        self.formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(self.formatter)
-
-        self.logger.addHandler(self.handler)

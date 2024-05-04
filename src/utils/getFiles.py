@@ -1,27 +1,40 @@
 import os
+import sys
+from ..utils.logs import Logs
 
 def getFiles(type):
 
-    dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    log = Logs('Get_files')
 
-    dir = os.path.join(dir_relative, 'pdf', '{}'.format(type))
+    try:
+        dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-    if os.path.exists(dir):
+        dir = os.path.join(dir_relative, 'pdf', '{}'.format(type))
 
-        files = os.listdir(dir)
+        if os.path.exists(dir):
 
-        if files:
+            files = os.listdir(dir)
 
-            return files
+            if files:
+                
+                log.logger.info('Arquivos PDF encontrados na pasta {} e retornados com sucesso'. format(dir))
+                return files
+            
+            else:
+
+                print('Nenhum arquivo pdf encontrado no diretório: {}'.format(dir))
+                log.logger.warning('Nenhum arquivo PDF foi encontrado no diretório: {}'.format(dir))
+                
+                sys.exit()
         
         else:
 
-            print('Nenhum arquivo pdf encontrado no diretório: {}'.format(dir))
+            print('Diretório {} não encontrado'.format(dir))
+            log.logger.warning('Diretório {} não foi encontrado'.format(dir))
 
-            return False
-    
-    else:
+            sys.exit()
 
-        print('Diretório {} não encontrado'.format(dir))
+    except Exception as error:
 
-        return False
+        print('Algum erro inesperado ocorreu ao tentar localizar os arquivos PDF, erro: {}'.format(error))
+        log.logger.error('Algum erro inesperado ocorreu ao tentar localizar os arquivos PDF, erro: {}'.format(error))
