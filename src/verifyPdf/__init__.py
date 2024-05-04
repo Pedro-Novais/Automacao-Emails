@@ -1,14 +1,17 @@
-from .notes import verifyNotes
-from .blt import verifyBlt
+from .notes import VerifyNotes
+from .blt import VerifyBlt
+from .definedStatusFinal import DefinedStatus
 
 class execNotes:
 
     def __init__(self, emails):
 
-        verifyNotes(
+        VerifyNotes(
             emails=emails
             )
         
-        verifyBlt(
+        VerifyBlt(
             emails=emails
             )
+        
+        DefinedStatus()

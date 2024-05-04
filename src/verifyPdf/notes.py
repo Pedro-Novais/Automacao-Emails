@@ -4,7 +4,7 @@ from ..utils.getFiles import getFiles
 from ..scriptDb.conn import Conect
 from ..utils.logs import Logs
 
-class verifyNotes:
+class VerifyNotes:
 
     def __init__(self, emails):
 
