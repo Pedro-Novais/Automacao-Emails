@@ -1,3 +1,4 @@
+import os
 from src.scriptDb.__init__ import execDatabase
 from src.excel.__init__ import execGetValues
 from src.insert.__init__ import execInsertData
@@ -17,6 +18,8 @@ class execMain:
         self.verifyPdfs(emails=value.emails)
 
         ExecSendEmail()
+
+        os.system("pause")
 
 
     def insertingValues(self, values, emails):
