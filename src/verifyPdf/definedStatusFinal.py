@@ -44,12 +44,12 @@ class DefinedStatus:
 
             not_files = self.cursor.fetchall()
 
-            if len(not_files) > 0:
+            # if len(not_files) > 0:
 
-                space_line(100)
-                print('WARNING - Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
-                log.logger.warning('Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
-                sys.exit()
+            #     space_line(100)
+            #     print('WARNING - Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
+            #     log.logger.warning('Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
+            #     sys.exit()
 
         except Exception as error:
 

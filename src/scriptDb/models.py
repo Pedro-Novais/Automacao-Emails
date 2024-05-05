@@ -25,8 +25,8 @@ class CreateTable:
                             reasonSocial TEXT NOT NULL,
                             cnpj TEXT NOT NULL,
                             description TEXT NOT NULL,
-                            valueB TEXT NOT NULL,
-                            valueL TEXT NOT NULL,
+                            valueB INTEGER,
+                            valueL INTEGER,
                             dateVenc TEXT NOT NULL,
                             email TEXT NOT NULL
                         )''')
