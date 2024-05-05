@@ -26,12 +26,12 @@ class DefinedStatus:
 
             self.conn.commit()
 
-            log.logger.info('Status dos emails atualizado com sucesso')
+            log.logger.info('Status dos emails atualizado com sucesso para os que estao aptos a serem enviados e os que nao estao!')
 
         except Exception as error:
 
             space_line(100)
-            print('ERRO - Ocorreu algum erro ao definir os status dos emails, erro: {}'.format(error))
+            print('ERRO - Ocorreu algum erro ao definir os status dos emails, erro: {}, o programa será encerrado'.format(error))
             log.logger.error('Ocorreu algum erro ao definir os status dos emails, erro: {}'.format(error))
 
             sys.exit()
@@ -44,16 +44,17 @@ class DefinedStatus:
 
             not_files = self.cursor.fetchall()
 
-            # if len(not_files) > 0:
+            if len(not_files) > 0:
 
-            #     space_line(100)
-            #     print('WARNING - Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
-            #     log.logger.warning('Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
-            #     sys.exit()
+                space_line(100)
+                print('WARNING - Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
+                log.logger.warning('Há arquivos pdf que não foram encontrados, verifique e tente realizar o envio novamente')
+                sys.exit()
 
         except Exception as error:
 
             space_line(100)
-            print('ERRO - Ocorreu um erro inesperado ao verificar os status dos emails, erro: {}'.format(error))
+            print('ERRO - Ocorreu um erro inesperado ao verificar os status dos emails, erro: {}, o programa será encerrado!'.format(error))
             log.logger.error('ERRO - Ocorreu um erro inesperado ao verificar os status dos emails, erro: {}'.format(error))
+            
             sys.exit()

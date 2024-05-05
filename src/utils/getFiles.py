@@ -18,6 +18,7 @@ def getFiles(type):
             if files:
                 
                 log.logger.info('Arquivos PDF encontrados na pasta {} e retornados com sucesso'. format(dir))
+                
                 return files
             
             else:
@@ -29,12 +30,14 @@ def getFiles(type):
         
         else:
 
-            print('Diretório {} não encontrado'.format(dir))
+            print('Diretório {} não encontrado, verifique e tente-o novamente'.format(dir))
             log.logger.warning('Diretório {} não foi encontrado'.format(dir))
 
             sys.exit()
 
     except Exception as error:
 
-        print('Algum erro inesperado ocorreu ao tentar localizar os arquivos PDF, erro: {}'.format(error))
+        print('Algum erro inesperado ocorreu ao tentar localizar os arquivos PDF, erro: {}, o programa será encerrado'.format(error))
         log.logger.error('Algum erro inesperado ocorreu ao tentar localizar os arquivos PDF, erro: {}'.format(error))
+
+        sys.exit()

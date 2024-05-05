@@ -26,9 +26,16 @@ class readExcel:
             sys.exit()
 
         except Exception as error:
+            
+            if str(error.args[0]) == "Worksheet FATURAMENTO does not exist.":
 
-            print("Algum erro inesperado ocorreu, {}".format(error))
-            log.logger.error('Algum erro inesperado ocorreu, erro: {}'.format(error))
-            sys.exit()
+                print("ERRO - Verifique se a aba da planilha está com o nome correto: FATURAMENTO, todos os caracteres deve estar em maiusculo, o programa será encerrado!")
+                log.logger.error('Aba da planilha não foi encontrada, verifique se o nome está correto: FATURAMENTO, erro: {}'.format(error))
+                sys.exit()
+            
+            else:
+                print("Algum erro inesperado ocorreu, {}, o programa será encerrado".format(error))
+                log.logger.error('Algum erro inesperado ocorreu, erro: {}'.format(error))
+                sys.exit()
 
         return wb

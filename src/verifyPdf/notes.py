@@ -38,8 +38,9 @@ class VerifyNotes:
         
         except Exception as error:
 
-            print('Algum erro inesperado ocorreu ao selecionar as notas salvas na tabela Email, erro: {}'.format(error))
+            print('Algum erro inesperado ocorreu ao selecionar as notas salvas na tabela Email, erro: {}, o programa será encerrado!'.format(error))
             log.logger.error('Algum erro inesperado ocorreu ao selecionar as notas salvas na tabela Email, erro: {}'.format(error))
+
             sys.exit()
 
     def verifyNotesFiles(self, email, log):
@@ -75,14 +76,14 @@ class VerifyNotes:
                 infos_note.append(data_info_notes)
 
                 space_line(100)
-                print("ERRO - Nota {}.pdf do email: {}, nao existe!".format(note, email))
-                log.logger.error('Nota: {}.pdf do email: {} nao existe!'.format(note, email))
+                print("ERRO - Nota {}.pdf do email: {}, nao foi encontrada, verifique a pasta PDF!".format(note, email))
+                log.logger.error('Nota: {}.pdf do email: {} nao foi encontrada!'.format(note, email))
 
             except Exception as error:
 
                 self.verifyStatus = "False"
-                print('Algum erro desconhecido ocorreu: {}'.format(error))
-                log.logger.error('Algum erro desconhecido ocorreu: {}'.format(error))
+                print('Algum erro desconhecido ocorreu ao verificar os arquivos de notas presente no diretório PDF, erro: {}, o programa será encerrado!'.format(error))
+                log.logger.error('Algum erro desconhecido ocorreu ao verificar os arquivos de notas presente no diretório PDF, erro: {}'.format(error))
 
                 sys.exit()
 

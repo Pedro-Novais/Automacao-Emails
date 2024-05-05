@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 from ..scriptDb.conn import Conect
 from ..utils.logs import Logs
 
@@ -55,7 +56,10 @@ class Insert:
                 log.logger.warning('Valores ja existem na tabela Email, id Interno: {} e email: {}'.format(value[0], value[10]))
 
             else:
-                log.logger.error('Erro ao inserir valores na tabela Email, Id interno: {}, email: {}, erro: {}'. format(value[0], value[10], error))
+                print('ERRO - Algum erro desconhecido ocorreu durante a inseção do email: {}, Idinterno: {} no banco de dados Emails, erro: {}'.format(value[10], value[0], error))
+                log.logger.error('Erro ao inserir valores na tabela Email, Id interno: {}, email: {}, erro: {}, o programa será encerrado!'. format(value[0], value[10], error))
+
+                sys.exit()
 
     def insertingRowStatus(self, email, log):
 
@@ -78,4 +82,7 @@ class Insert:
 
             else:
 
+                print('ERRO - Algum erro desconhecido ocorreu durante a inseção do email: {}, no banco de dados Status, erro: {}, o programa será encerrado!'.format(email, error))
                 log.logger.error('Erro ao inserir dados na tabela Status, email: {}, erro: {}'.format(email, error))
+
+                sys.exit()

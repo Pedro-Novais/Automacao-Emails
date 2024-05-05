@@ -79,15 +79,3 @@ def get_line_html(
                 )
     
     return line
-
-# omg = ['teste','teste','teste','teste','teste', 'teste', 'teste','teste','teste', 'teste']
-
-# teste = get_line_html(omg)
-
-# teste2 = get_line_html(omg)
-
-# strd = '{}'.format(teste+teste2)
-
-# aoba = get_message_base_html(strd)
-
-# print(aoba)

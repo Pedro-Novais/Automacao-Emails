@@ -26,6 +26,8 @@ class Conect:
             return conect
 
         except Exception as error:
-
-            log.logger.error('Erro ao conectar com o banco de dados, erro: {}'.format(error))
+            
+            print('ERRO - Ocorreu algum erro ao tentar se conectar com o banco de dados, erro: {}, o programa sera encerrado!'.format(error))
+            log.logger.error('Erro ao se conectar com o banco de dados, erro: {}'.format(error))
+            
             sys.exit()

@@ -1,10 +1,11 @@
 import json
 import os
+import sys
 from dotenv import load_dotenv
+from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
-from datetime import datetime
 from ..utils.messageBaseEmail import get_message_base_html, get_line_html
 from ..scriptDb.conn import Conect
 from .conectServer import ConectServer
@@ -16,8 +17,6 @@ class ConstructorMessage:
         
         load_dotenv()
 
-        log = Logs('Constructor_message')
-
         self.email = email
 
         conection = Conect()
@@ -25,9 +24,11 @@ class ConstructorMessage:
         self.conn = conection.conn
         self.cursor = self.conn.cursor()
 
-        self.constructor_message(log)
+        self.constructor_message()
 
-    def constructor_message(self, log):
+    def constructor_message(self):
+
+        log = Logs('Constructor_message')
 
         self.msg = MIMEMultipart('altenartive')
 
@@ -35,21 +36,17 @@ class ConstructorMessage:
         self.msg['To'] = self.email
         self.msg['Subject'] = "Financeiro E-deploy"
 
-        self.builder_message_email()
-        self.select_files_pdf()
+        self.builder_message_email(log=log)
+        self.select_files_pdf(log=log)
         self.sendEmail()
 
-        print(self.email)
-
-    def builder_message_email(self):
+    def builder_message_email(self, log):
 
         try:
 
             self.cursor.execute('SELECT * FROM Emails WHERE email = ?', (self.email,))
 
             datas = self.cursor.fetchall()
-
-            print(datas[0]) 
 
             self.line = ''
 
@@ -77,10 +74,15 @@ class ConstructorMessage:
             msg_complete = MIMEText(self.msg_complete, 'html')
 
             self.msg.attach(msg_complete)
+
+            log.logger.info('Mensagem do email {} criada com sucesso'.format(self.email))
         
         except Exception as error:
 
-            print(error)
+            print('ERRO - Algum erro ocorreu ao criar a mensagem do email {}, erro: {}, o programa será encerrado'.format(self.email, error))
+            log.logger.error('Algum erro ocorreu ao criar a mensagem do email {}, erro: {}'.format(self.email, error))
+
+            sys.exit()
 
     def transform_data_from_base(self, datas):
 
@@ -130,7 +132,7 @@ class ConstructorMessage:
         
         return 'R${}'.format(value_formated)
     
-    def select_files_pdf(self):
+    def select_files_pdf(self, log):
 
         try:
 
@@ -143,14 +145,19 @@ class ConstructorMessage:
 
             self.fixed_files_pdf(
                 files_note=files_note, 
-                files_boleto=files_boleto
+                files_boleto=files_boleto,
+                log=log
                 )
-        
+            
+            log.logger.info('Notas {} e Boletos {} selecionados com sucesso do banco de dados, Status, email: {}'.format(files_note, files_boleto, self.email))
+
         except Exception as error:
 
-            print(error)
+            print('ERRO - Algum erro inesperado ocorreu ao selecioanar as notas e boletos do email {}, erro: {}, o programa será encerrado!'.format(self.email, error))
+            log.logger.info('Algum erro inesperado ocorreu ao selecioanar as notas {} e boletos {} do banco de dados do email {}, erro: {}'.format(files_note, files_boleto, self.email, error))
+            sys.exit()
 
-    def fixed_files_pdf(self, files_note, files_boleto):
+    def fixed_files_pdf(self, files_note, files_boleto, log):
 
         try:
 
@@ -164,6 +171,8 @@ class ConstructorMessage:
                     pdf.add_header('Content-Disposition', 'attachment', filename = files_note[i]['nameNote'])
                     self.msg.attach(pdf)
             
+            log.logger.info('Notas: {} do email: {}, fixadas com sucesso na mensagem a ser enviada!'.format(files_note, self.email))
+
             for i in range(len(files_boleto)):
 
                 dir_note = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'pdf', 'Boletos', '{}'.format(files_boleto[i]['nameBoleto'])))
@@ -173,10 +182,14 @@ class ConstructorMessage:
                     pdf = MIMEApplication(file.read())
                     pdf.add_header('Content-Disposition', 'attachment', filename = files_boleto[i]['nameBoleto'])
                     self.msg.attach(pdf)
+
+            log.logger.info('Boletos: {} do email: {}, fixadas com sucesso na mensagem a ser enviada!'.format(files_boleto, self.email))
         
         except Exception as error:
 
-            print('Algum erro desconhcido ocorreu ao fixar os arquivos pdf na mensagem do email, erro: {}'.format(error))
+            print('Algum erro desconhcido ocorreu ao fixar os arquivos pdf na mensagem do email: {}, erro: {}, o programa será encerrado'.format(self.email, error))
+            log.logger.error('Algum erro desconhcido ocorreu ao fixar os arquivos pdf na mensagem do email: {}, erro: {}'.format(self.email, error))
+            sys.exit()
 
     def sendEmail(self):
 

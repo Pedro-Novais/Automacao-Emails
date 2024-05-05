@@ -1,6 +1,7 @@
 import smtplib
 import ssl
 import os
+import time
 import sys
 from ..utils.logs import Logs
 from smtplib import SMTPAuthenticationError
@@ -17,23 +18,22 @@ class ConectServer:
         self.cursor = self.conn.cursor()
 
         try:
-            # destinatary = "phnovais7@gmail.com"
-            log = Logs('Conect_smtp')
+
+            log = Logs('Conect_Server')
             
             load_dotenv()
 
             smtp_server = 'smtp.office365.com'
-            smtp_port = 587  # Porta TLS padrão
+            smtp_port = 587 
             smtp_username = os.getenv('EMAIL')
             smtp_password = os.getenv('PASSWORD')
 
-            # Criar uma conexão SMTP segura com SSL/TLS
             context = ssl.create_default_context()
 
             with smtplib.SMTP(smtp_server, smtp_port) as server:
 
-                server.starttls(context=context)  # Inicia a criptografia TLS
-                server.login(smtp_username, smtp_password)  # Autentica-se com o servidor SMTP
+                server.starttls(context=context)  
+                server.login(smtp_username, smtp_password) 
 
                 log.logger.info('Login realizado com sucesso no servidor smtp')
 
@@ -45,14 +45,20 @@ class ConectServer:
             self.cursor.execute(''' UPDATE Status SET sended = ? WHERE email = ?''', ("True", destinatary))
 
             self.conn.commit()
+            log.logger.info('Email {} teve seu status atualizado para True na coluna sended, no banco de dados Status'.format(destinatary))
 
-            sys.exit()
+            time.sleep(10)
+
         except SMTPAuthenticationError as error:
 
-            print('Credenciais para realizar login está incorreta, verifique o arquivo .env, erro: {}'.format(error))
-            log.logger.error('Erro ao realizar login no servidor smtp, credenciais inválidas, {}'.format(error))
+            print('Credenciais para realizar login está incorreta, verifique o arquivo .env e tente novamente, o programa será encerrado!')
+            log.logger.error('Erro ao realizar login no servidor smtp, credenciais inválidas, erro: {}'.format(error))
+
+            sys.exit()
         
         except Exception as error:
 
-            print('ERRO - Algum erro inesperado ocorreu ao realizar o login no servidor smtp, erro: {}'.format(error))
-            log.logger.error('Algum erro inesperado ocorreu ao realizar o login no servidor smtp, erro: {}'.format(error))
+            print('ERRO - Algum erro inesperado ocorreu ao enviar o email:{} , erro: {}, o programa será encerrado!'.format(destinatary, error))
+            log.logger.error('Algum erro inesperado ocorreu ao enviar o email:{} , erro: {}'.format(destinatary, error))
+
+            sys.exit()

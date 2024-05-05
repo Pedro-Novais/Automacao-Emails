@@ -38,7 +38,7 @@ class VerifyBlt:
         
         except Exception as error:
 
-            print('Algum erro inesperado ocorreu ao selecionar os boletos salvos na tabela Email, email: {}, erro: {}'.format(email,error))
+            print('Algum erro inesperado ocorreu ao selecionar os boletos salvos na tabela Email, email: {}, erro: {}, o programa será encerrado!'.format(email,error))
             log.logger.error('Algum erro inesperado ocorreu ao selecionar o boleto salvo na tabela Email, email: {}, erro: {}'.format(email, error))
             sys.exit()
 
@@ -116,4 +116,7 @@ class VerifyBlt:
         
         except Exception as error:
 
-            print(error)
+            print('ERRO - Algum erro inesperado ocorreu ao realizar a comparação do IdInterno salvo no banco de dados com os boletos presentes na pasta de PDF, o programa será encerrado, erro: {}'.format(error))
+            log.logger.error('Algum erro inesperado ocorreu ao realizar a comparação do IdInterno salvo no banco de dados com os boletos presentes na pasta de PDF, o programa será encerrado, erro: {}'.format(error))
+
+            sys.exit()

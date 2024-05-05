@@ -16,7 +16,8 @@ class getData:
         self = []
         i = 0
 
-        try: 
+        try:
+
             for line in aba.wb:
 
                 if i > 0:
@@ -37,8 +38,9 @@ class getData:
 
         except Exception as error:
 
-            print('Algum erro inesperado ocorreu ao selecionar os valores da planilha, erro: {}'.format(error))
+            print('Algum erro inesperado ocorreu ao selecionar os valores da planilha, erro: {}, o programa será encerrado!'.format(error))
             log.logger.error('Algum erro inesperado ocorreu ao selecionar os valores da planilha, erro: {}'.format(error))
+
             sys.exit()
 
         log.logger.info('Todos os valores da planilha foram selecionados com sucesso')
@@ -50,6 +52,7 @@ class getData:
         log = Logs('Get_email')
 
         try:
+
             self = []
             index_duplicated = []
 
@@ -75,12 +78,13 @@ class getData:
 
                 del self[index_duplicated[i]]
 
-            log.logger.info("Email's selecionados com sucesso")
+            log.logger.info("Email's selecionados com sucesso da selecao antes feita diretamente na planilha")
             
             return self
         
         except Exception as error:
 
-            print('Ocorreu algum erro ao realizar a manipulação dos emails, erro: {}'.format(error))
+            print('Ocorreu algum erro ao realizar a manipulação dos emails, erro: {}, o programa será encerrado!'.format(error))
             log.logger.error('Ocorreu algum erro ao realizar a manipulação dos emails, erro: {}'.format(error))
+
             sys.exit()

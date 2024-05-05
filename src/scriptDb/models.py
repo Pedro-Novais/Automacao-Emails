@@ -47,6 +47,6 @@ class CreateTable:
             
         except Exception as error:
 
-            print('Erro ao criar banco de dados / tabelas: {}'.format(error))
+            print('Erro ao criar banco de dados / tabelas: {}, o programa será fechado!'.format(error))
             log.logger.error('Erro ao criar banco de dados / tabelas: {}'.format(error))
             sys.exit()
