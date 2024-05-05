@@ -20,7 +20,7 @@ class VerifyNotes:
 
     def verify(self, emails):
 
-        log = Logs('Verify_notes')
+        log = Logs('Verify_Notes')
 
         for i in range(len(emails)):
             

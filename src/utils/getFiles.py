@@ -4,7 +4,7 @@ from ..utils.logs import Logs
 
 def getFiles(type):
 
-    log = Logs('Get_files')
+    log = Logs('Get_Files')
 
     try:
         dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))

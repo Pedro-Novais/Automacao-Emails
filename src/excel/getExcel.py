@@ -11,7 +11,7 @@ class readExcel:
     def read_excel(self):
 
         try:
-            log = Logs('Excel')
+            log = Logs('Get_Excel')
 
             self = openpyxl.load_workbook('C:/New-Send-Email/excel/faturamento.xlsx')
 

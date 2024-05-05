@@ -19,13 +19,13 @@ class Insert:
     def inserting(self, values):
 
         if len(values) > 0:
-            logEmail = Logs('Inserting_table_Emails')
+            logEmail = Logs('Inserting_Table_Emails')
 
             for i in range(len(values)):
 
                 self.insertingRow(value=values[i], log=logEmail)
             
-            logStatus = Logs('Inserting_table_status')
+            logStatus = Logs('Inserting_Table_Status')
 
             for i in range(len(self.emails)):
 

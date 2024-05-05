@@ -10,7 +10,7 @@ class CreateTable:
     
     def createTable(self):
 
-        log = Logs('Database')
+        log = Logs('Models')
 
         try:
             db = Conect()

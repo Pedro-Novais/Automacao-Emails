@@ -28,7 +28,7 @@ class ConstructorMessage:
 
     def constructor_message(self):
 
-        log = Logs('Constructor_message')
+        log = Logs('Constructor_Message')
 
         self.msg = MIMEMultipart('altenartive')
 

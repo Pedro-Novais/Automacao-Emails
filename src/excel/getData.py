@@ -49,7 +49,7 @@ class getData:
 
     def get_email(self, values):
 
-        log = Logs('Get_email')
+        log = Logs('Get_Email')
 
         try:
 

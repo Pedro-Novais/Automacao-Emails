@@ -7,7 +7,7 @@ class VerifyEmailSend:
 
     def __init__(self):
     
-        log = Logs('Verify_emails_already_send')
+        log = Logs('Verify_Emails_Already_Send')
 
         conection = Conect()
 

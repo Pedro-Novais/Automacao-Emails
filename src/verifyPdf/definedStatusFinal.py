@@ -7,7 +7,7 @@ class DefinedStatus:
 
     def __init__(self):
 
-        log = Logs('Defined_status')
+        log = Logs('Defined_Status')
 
         conection = Conect()
 

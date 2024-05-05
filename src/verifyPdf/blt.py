@@ -20,7 +20,7 @@ class VerifyBlt:
 
     def verify(self, emails):
 
-        log = Logs('Verify_blt')
+        log = Logs('Verify_Blt')
 
         for i in range(len(emails)):
         
