@@ -19,8 +19,6 @@ class execMain:
 
         ExecSendEmail()
 
-        os.system("pause")
-
 
     def insertingValues(self, values, emails):
         
