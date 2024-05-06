@@ -8,8 +8,6 @@ def get_message_base_html(lines):
 
             <p>Prezados,</p>
 
-            <p>Como conversado via Whatzapp , segue em anexo os boletos com as datas atualizadas, das renegociações a seguir,</p>
-
             <table style='font-family: Open Sans, sans-serif;min-height: 3rem;border-spacing: 0;'>
 
                 <tr style='background-color:#8d8d8d;'>
@@ -29,9 +27,18 @@ def get_message_base_html(lines):
                 {}
             </table>
 
+            
+
+            <p style='background-color:#ffff00'> Em caso de atraso: </p>
+            <p> 
+                5.6.1. O atraso em qualquer dos pagamentos devidos em período superior a 30 (trinta) dias ensejará um ou mais dos seguintes efeitos, cumulativamente e conforme aplicável: (i) em relação aos Serviços: a imediata suspensão da prestação dos Serviços até que todos os débitos tenham sido integralmente pagos, 
+                considerando-se o valor principal acrescido dos encargos moratórios da Cláusula 5.6 acima; (ii) em relação à Licença do Software: imediata suspensão da Licença do Software e da prestação dos Serviços, até que todos os débitos tenham sido integralmente pagos, considerando-se o valor principal acrescido dos encargos moratórios da Cláusula 5.6 acima.
+                5.6.2. Decorridos 60 (sessenta) dias da emissão da cobrança da Licença do Software, sem o devido pagamento, a utilização do Software será imediatamente interrompida de forma definitiva, sem necessidade de notificação da E-DEPLOY à Licenciada.
+            </p>
+
             <p>Qualquer dúvida estou à disposição,</p>
 
-            <p>Att.,</p>
+            <p>Att,.</p>
         </body>
     </html>
     """.format(lines)

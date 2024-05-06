@@ -6,6 +6,7 @@ from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 from ..utils.messageBaseEmail import get_message_base_html, get_line_html
 from ..scriptDb.conn import Conect
 from .conectServer import ConectServer
@@ -34,10 +35,12 @@ class ConstructorMessage:
 
         self.msg['From'] = os.getenv('EMAIL')
         self.msg['To'] = self.email
-        self.msg['Subject'] = "Financeiro E-deploy"
+        self.msg['Cc'] = "faturamento@e-deploy.com.br, financeiro@e-deploy.com.br"
+        self.msg['Subject'] = "FATURAMENTO E-DEPLOY - BOLETOS E NOTAS FISCAIS"
 
         self.builder_message_email(log=log)
         self.select_files_pdf(log=log)
+        self.anex_img(log=log)
         self.sendEmail()
 
     def builder_message_email(self, log):
@@ -156,6 +159,30 @@ class ConstructorMessage:
             print('ERRO - Algum erro inesperado ocorreu ao selecioanar as notas e boletos do email {}, erro: {}, o programa será encerrado!'.format(self.email, error))
             log.logger.info('Algum erro inesperado ocorreu ao selecioanar as notas {} e boletos {} do banco de dados do email {}, erro: {}'.format(files_note, files_boleto, self.email, error))
             sys.exit()
+
+    def anex_img(self, log):
+
+        try:
+
+            dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'assinatura', 'assinatura.jpg'))
+
+            with open(dir_relative, 'rb') as img_assinature:
+
+                img = MIMEImage(img_assinature.read())
+
+                img.add_header('Content-Disposition', 'attachment', filename="assinatura.jpg")
+
+                self.msg.attach(img)
+
+            log.logger.info('Assinatura anexada com sucesso no envio do email')
+
+        except Exception as error:
+
+            print(error)
+            log.logger.error('ERRO - Algum erro ocorreu ao enxar a assinatura no envio do email, erro: {}, o sistema será encerrado!'.format(error))
+
+            sys.exit()
+    
 
     def fixed_files_pdf(self, files_note, files_boleto, log):
 
