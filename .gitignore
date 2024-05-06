@@ -5,7 +5,6 @@
 *.pdf
 *.log
 *.db
-.env
 dist/
 build/
 assinatura/
