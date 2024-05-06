@@ -35,7 +35,7 @@ class ConstructorMessage:
 
         self.msg['From'] = os.getenv('EMAIL')
         self.msg['To'] = self.email
-        self.msg['Cc'] = "faturamento@e-deploy.com.br, financeiro@e-deploy.com.br"
+        self.msg['Cc'] = "faturamento@teste.com.br, financeiro@teste.com.br"
         self.msg['Subject'] = "FATURAMENTO E-DEPLOY - BOLETOS E NOTAS FISCAIS"
 
         self.builder_message_email(log=log)
