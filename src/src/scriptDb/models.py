@@ -1,6 +1,7 @@
 import sys
 from .conn import Conect
 from ..utils.logs import Logs
+from ..utils.logs import Logs
 
 class CreateTable:
 

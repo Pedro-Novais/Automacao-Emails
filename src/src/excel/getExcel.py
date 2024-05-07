@@ -14,7 +14,7 @@ class readExcel:
         try:
             log = Logs('Get_Excel')
 
-            dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'excel', 'faturamento.xlsx'))
+            dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'excel', 'faturamento.xlsx'))
 
             self = openpyxl.load_workbook(dir_relative)
 

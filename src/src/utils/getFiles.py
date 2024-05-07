@@ -7,7 +7,7 @@ def getFiles(type):
     log = Logs('Get_Files')
 
     try:
-        dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 
         dir = os.path.join(dir_relative, 'pdf', '{}'.format(type))
 

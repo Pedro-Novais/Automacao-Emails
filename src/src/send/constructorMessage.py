@@ -164,7 +164,7 @@ class ConstructorMessage:
 
         try:
 
-            dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'assinatura', 'assinatura.jpg'))
+            dir_relative = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'assinatura', 'assinatura.jpg'))
 
             with open(dir_relative, 'rb') as img_assinature:
 
@@ -190,7 +190,7 @@ class ConstructorMessage:
 
             for i in range(len(files_note)):
 
-                dir_note = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'pdf', 'Notas', '{}'.format(files_note[i]['nameNote'])))
+                dir_note = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'pdf', 'Notas', '{}'.format(files_note[i]['nameNote'])))
 
                 with open(dir_note, 'rb') as file:
                     
@@ -202,7 +202,7 @@ class ConstructorMessage:
 
             for i in range(len(files_boleto)):
 
-                dir_note = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'pdf', 'Boletos', '{}'.format(files_boleto[i]['nameBoleto'])))
+                dir_note = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'pdf', 'Boletos', '{}'.format(files_boleto[i]['nameBoleto'])))
 
                 with open(dir_note, 'rb') as file:
                     
