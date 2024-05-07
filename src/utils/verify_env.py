@@ -14,7 +14,7 @@ def verify_env():
         email = os.getenv('EMAIL')
         password = os.getenv('PASSWORD')
 
-        if email == "" or password =="":
+        if email == "" or password == "":
 
             print('ERRO -  Preencha o arquivo .env, com suas informações de login para que o envio de email seja possível, o programa será encerrado!')
             log.logger.warning('Arquivo .env nao contem todos as informacoes para realizar o login e iniciar o envio de email')

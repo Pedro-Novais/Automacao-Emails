@@ -42,11 +42,19 @@ class CreateTable:
                             sended TEXT NOT NULL    
                         ) ''')
             
+            cursor.execute('''CREATE TABLE IF NOT EXISTS NumbersExecutes (
+                           id INTEGER PRIMARY KEY,
+                           day DATE NOT NULL UNIQUE,
+                           quantityStartsBeforeComplete INTEGER,
+                           complete TEXT NOT NULL,
+                           quantityAfterComplete INTEGER
+                           )''')
+            
             log.logger.info('Banco de dados e tabelas criadas com sucesso')
             cursor.close()
             
         except Exception as error:
 
-            print('Erro ao criar banco de dados / tabelas: {}, o programa será fechado!'.format(error))
+            print('ERRO - Models - Erro ao criar banco de dados / tabelas: {}, o programa será fechado!'.format(error))
             log.logger.error('Erro ao criar banco de dados / tabelas: {}'.format(error))
             sys.exit()
