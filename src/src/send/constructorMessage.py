@@ -31,11 +31,12 @@ class ConstructorMessage:
 
         log = Logs('Constructor_Message')
 
+        self.email_copys =  ["phnovais7@gmail.com", "predohn@gmail.com"]
         self.msg = MIMEMultipart('altenartive')
 
         self.msg['From'] = os.getenv('EMAIL')
         self.msg['To'] = self.email
-        self.msg['Cc'] = "faturamento@e-deploy.com.br, financeiro@e-deploy.com.br"
+        self.msg['Cc'] =  ', '.join(self.email_copys)
         self.msg['Subject'] = "FATURAMENTO E-DEPLOY - BOLETOS E NOTAS FISCAIS"
 
         self.builder_message_email(log=log)
@@ -130,6 +131,7 @@ class ConstructorMessage:
                 index = i       
             
         if verification_point != 0:
+
             number_after_point = index + 3
 
             if number_after_point != len(value):
@@ -227,4 +229,4 @@ class ConstructorMessage:
 
     def sendEmail(self):
 
-        ConectServer(self.email, self.msg)
+        ConectServer(self.email, self.msg, self.email_copys)

@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 class ConectServer:
 
-    def __init__(self, destinatary, msg):
+    def __init__(self, destinatary, msg, copys):
 
         conection = Conect()
 
@@ -28,6 +28,8 @@ class ConectServer:
             smtp_username = os.getenv('EMAIL')
             smtp_password = os.getenv('PASSWORD')
 
+            all_recipients = [destinatary] + copys 
+
             context = ssl.create_default_context()
 
             with smtplib.SMTP(smtp_server, smtp_port) as server:
@@ -37,7 +39,7 @@ class ConectServer:
 
                 log.logger.info('Login realizado com sucesso no servidor smtp')
 
-                server.sendmail(os.getenv('EMAIL'), destinatary, msg.as_string())
+                server.sendmail(os.getenv('EMAIL'), all_recipients, msg.as_string())
 
                 print('Email enviado com sucesso para {}'.format(destinatary))
                 log.logger.info('Email enviado com sucesso para {}'.format(destinatary))

@@ -8,6 +8,7 @@ def get_message_base_html(lines):
 
             <p>Prezados,</p>
 
+            <p> Segue anexos notas fiscais e boletos referente aos serviços descritos, conforme detalhamento abaixo: </p>
             <table style='font-family: Open Sans, sans-serif;min-height: 3rem;border-spacing: 0;'>
 
                 <tr style='background-color:#8d8d8d;'>
