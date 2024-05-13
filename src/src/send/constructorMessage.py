@@ -35,7 +35,7 @@ class ConstructorMessage:
 
         self.msg['From'] = os.getenv('EMAIL')
         self.msg['To'] = self.email
-        self.msg['Cc'] = "faturamento@teste.com.br, financeiro@teste.com.br"
+        self.msg['Cc'] = "faturamento@e-deploy.com.br, financeiro@e-deploy.com.br"
         self.msg['Subject'] = "FATURAMENTO E-DEPLOY - BOLETOS E NOTAS FISCAIS"
 
         self.builder_message_email(log=log)
@@ -108,16 +108,17 @@ class ConstructorMessage:
         value_brute_formated = self.verify_inexisting_zero(value_brute)
         self.value_brute = value_brute_formated.replace('.', ',')
         
-        value_liquid = str(datas[8])
+        value_liquid = str(datas[8])  
         value_liquid_formated = self.verify_inexisting_zero(value_liquid)
         self.value_liquid = value_liquid_formated.replace('.', ',')
 
         date_venciment = datetime.strptime(datas[9], '%Y-%m-%d %H:%M:%S')
         self.date_venciment_formated = date_venciment.strftime('%d/%m/%y')
-
+        
     @staticmethod
     def verify_inexisting_zero(value):
 
+        verification_point = 0
         index = -1
         value_formated = value
 
@@ -125,15 +126,21 @@ class ConstructorMessage:
 
             if caracter == '.':
 
-                index = i
+                verification_point = 1
+                index = i       
+            
+        if verification_point != 0:
+            number_after_point = index + 3
 
-        number_after_point = index + 3
+            if number_after_point != len(value):
 
-        if number_after_point != len(value):
+                value_formated = '{}{}'.format(value, '0')
+            
+            return 'R${}'.format(value_formated)
 
-            value_formated = '{}{}'.format(value, '0')
-        
-        return 'R${}'.format(value_formated)
+        else:
+
+            return 'R${},00'.format(value)
     
     def select_files_pdf(self, log):
 
