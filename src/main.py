@@ -7,7 +7,7 @@ from src.resetDatabase.__init__ import ExecResetDatabase
 from src.verifyQuantityExecutions.__init__ import ExecVerifyQuantityExecution
 from src.utils.verify_env import verify_env
 
-class execMain:
+class ExecMain:
 
     def __init__(self):
 
@@ -36,4 +36,4 @@ class execMain:
 
         execNotes(emails=emails)
 
-execMain()
+ExecMain()

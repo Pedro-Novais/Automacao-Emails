@@ -31,7 +31,7 @@ class ConstructorMessage:
 
         log = Logs('Constructor_Message')
 
-        self.email_copys =  ["email-teste", "email-teste"]
+        self.email_copys =  [os.getenv('EMAIL_COPY_ONE'), os.getenv('EMAIL_COPY_TWO')]
         self.msg = MIMEMultipart('altenartive')
 
         self.msg['From'] = os.getenv('EMAIL')
